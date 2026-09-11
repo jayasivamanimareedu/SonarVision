@@ -16,13 +16,32 @@ function seeded(seed: number) {
   }
 }
 
+// Per-scan survey centers so mock detections plot in distinct real-world
+// areas, mirroring what the backend geotagging engine produces from metadata.
+// Coordinates are simulated coastal/harbor survey sites for demonstration.
+const SURVEY_CENTERS: [number, number][] = [
+  [37.8058, -122.4695], // San Francisco Bay
+  [32.7079, -117.239], // San Diego harbor
+  [41.3708, -71.3276], // Rhode Island Sound
+  [47.6205, -122.3493], // Puget Sound
+  [25.7688, -80.1339], // Miami channel
+  [42.352, -70.9835], // Boston harbor
+  [30.404, -87.211], // Pensacola pass
+  [36.8508, -75.978], // Virginia Beach wreck site
+]
+
 function makeDetections(scanId: number, count: number): Detection[] {
   const rand = seeded(scanId * 97 + 13)
+  const [baseLat, baseLon] = SURVEY_CENTERS[(scanId - 1) % SURVEY_CENTERS.length]
   const detections: Detection[] = []
   for (let i = 0; i < count; i++) {
     const label = LABELS[Math.floor(rand() * LABELS.length)]
     const w = 0.06 + rand() * 0.16
     const h = 0.06 + rand() * 0.16
+    // Spread detections a few hundred meters around the survey center.
+    // ~0.0045 deg latitude ≈ 500 m; longitude scaled by latitude.
+    const latOffset = (rand() - 0.5) * 0.009
+    const lonOffset = (rand() - 0.5) * 0.009 / Math.cos((baseLat * Math.PI) / 180)
     detections.push({
       id: scanId * 100 + i,
       scan_id: scanId,
@@ -35,6 +54,8 @@ function makeDetections(scanId: number, count: number): Detection[] {
         w: Math.round(w * 1000) / 1000,
         h: Math.round(h * 1000) / 1000,
       },
+      latitude: Math.round((baseLat + latOffset) * 1e7) / 1e7,
+      longitude: Math.round((baseLon + lonOffset) * 1e7) / 1e7,
     })
   }
   return detections
