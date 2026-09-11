@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+.venv312/
+venv/
+backend/.venv/
+backend/.venv312/
+
+# Environment variables
+.env
+
+# Backend runtime files
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
+backend/*.db
+backend/**/*.db
+
+# Node
+node_modules/
+.next/
+out/
+
+# Build/cache
+*.log
+.DS_Store
+
+# IDE
+.vscode/
+.idea/

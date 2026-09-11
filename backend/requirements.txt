@@ -1,0 +1,10 @@
+fastapi==0.115.5
+uvicorn[standard]==0.32.1
+sqlalchemy==2.0.36
+pydantic==2.10.3
+pydantic-settings==2.6.1
+python-multipart==0.0.19
+# Real YOLO detector for the supplied YOLO11s model
+ultralytics==8.4.146
+opencv-python-headless>=4.10,<5
+numpy>=1.26,<3
